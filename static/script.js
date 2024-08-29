@@ -91,7 +91,10 @@ function onWebSocketMessage(event) {
         messagesDiv.style.borderColor = toggle ? "black" : "red";
         toggle = !toggle;
     }, 100);
-    setTimeout(() => clearInterval(interval), 650);
+    setTimeout(() => {
+        messagesDiv.style.borderColor = "black";
+        clearInterval(interval)
+    }, 600);
 }
 
 /**
