@@ -25,6 +25,7 @@ const database = createDatabaseConnection({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
+    charset: "utf8mb4"
 });
 
 /** @type {User[]} */
@@ -72,7 +73,6 @@ webSocketServer.on("connection", async (webSocketClient, req) => {
                 return console.error(err);
 
             const messageData = await stringifyMessagesFromSQL("WHERE id=LAST_INSERT_ID()");
-
             for (const client of webSocketServer.clients)
                 if (client.readyState === WebSocket.OPEN)
                     client.send(messageData);
@@ -154,7 +154,13 @@ function getUserFromCookies(cookies) {
 
     return user;
 }
-
+/*Bienvenue ! Voici les principales fonctionnalités de cette messagerie :
+    - ✉️ Envoi et réception des messages en temps réel
+    - 📥 Historique des message sauvegardé
+    - ↩️ Possibilité de répondre à un message en cliquant dessus (cliquer sur la crois au dessus du bouton "Envoyer" pour annuler)
+    - 🔗 Liens cliquables
+    - 🌄 Possibilité d'envoi d'images en écrivant "img:" suivit directement (sans espaces) du lien vers l'image (expérimental)
+    - ✨ Noms en couleur*/
 /**
  * 
  * @param {string} str 

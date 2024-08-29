@@ -5,6 +5,10 @@ html {
     font-family: "Nunito", sans-serif;
 }
 
+img {
+    height: 20vh;
+}
+
 #container {
     display: flex;
     flex-direction: column;
