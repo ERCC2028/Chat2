@@ -14,7 +14,7 @@ require('dotenv').config();
 
 const app = express();
 
-const PORT = Number(process.env.HTTP_PORT);
+const PORT = Number(process.env.PORT);
 const server = http.createServer(app);
 
 const webSocketServer = new WebSocket.Server({ server });
