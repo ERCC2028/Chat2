@@ -24,6 +24,7 @@ const sendMessageButton = document.getElementById("send-button");
 
 
 const urlPattern = /\b((?:https?):\/\/|data:)(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?\b/g;
+const htmlPattern = /^\s*!html\s+/;
 
 const webSocketURL = `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}`;
 
@@ -76,7 +77,7 @@ function onWebSocketOpen() {
  * @returns {void}
  */
 function onWebSocketMessage(event) {
-    const newMessages = parseNewMessages(event.data);;
+    const newMessages = parseNewMessages(event.data);
 
     if (newMessages.length > 1) {
         messagesDiv.innerHTML = "";
@@ -158,7 +159,7 @@ function setReply(messageId) {
  * @returns {void}
  */
 function sendMessage(messageContent = messageInput.value) {
-    if (messageContent === "!logout") {
+    if (messageContent.trim() === "!logout") {
         document.cookie = "username=";
         document.cookie = "password=";
         // @ts-ignore
@@ -254,9 +255,11 @@ function embedMessage(message) {
  */
 function embedMessageContent(message) {
     const content =
-        message.content.startsWith("img:") && urlPattern.test(message.content.slice(4)) ?
-            `<img src="${message.content.slice(4)}">` :
-            escapeHTML(message.content).replace(urlPattern, url => `<a href="${url.replace(/&amp;/g, "&")}">${url}</a>`);
+        htmlPattern.test(message.content) ?
+            message.content.replace(htmlPattern, "") :
+            message.content.startsWith("img:") && urlPattern.test(message.content.slice(4)) ?
+                `<img src="${message.content.slice(4)}">` :
+                escapeHTML(message.content).replace(urlPattern, url => `<a href="${url.replace(/&amp;/g, "&")}">${url}</a>`);
 
     return `
     <span class="message-date">${formatDate(message.timestamp)}</span>
