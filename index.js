@@ -212,7 +212,7 @@ function parseMessage(data) {
  * @param {string} where
  * @returns {Promise<string>}
  */
-function stringifyMessagesFromSQL(where = "WHERE timestamp > 1725135441925") {
+function stringifyMessagesFromSQL(where = "WHERE id > 566") {
     return new Promise((resolve, reject) => {
         database.query(`SELECT * FROM Messages ${where};`, (err, results) => {
             if (err) {
